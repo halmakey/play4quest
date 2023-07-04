@@ -1,0 +1,25 @@
+{
+  "name": "psudo-jinnai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx main",
+    "postinstall": "tsx ./scripts/dl-ytdlp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/http-proxy": "^1.17.11",
+    "@types/node": "^20.3.3",
+    "@types/send": "^0.17.1",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "http-proxy": "^1.18.1",
+    "send": "^0.18.0"
+  }
+}
