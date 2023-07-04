@@ -9,7 +9,12 @@ axios({
   method: "get",
   url: `https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/${BIN_NAME}`,
   responseType: "stream",
-}).then((res) => {
-  res.data.pipe(createWriteStream(BIN_PATH));
-  return chmod(BIN_PATH, "700");
+}).then(async (res) => {
+  await new Promise((resolve, reject) => {
+    res.data
+      .pipe(createWriteStream(BIN_PATH))
+      .on("finish", resolve)
+      .on("error", reject);
+  });
+  return await chmod(BIN_PATH, "770");
 });
