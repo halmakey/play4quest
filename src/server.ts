@@ -1,34 +1,34 @@
 import http from "node:http";
 import { ytdpl } from "./ytdlp";
-import httpProxy from "http-proxy";
-
-const proxy = httpProxy.createProxyServer({
-  ignorePath: true,
-  changeOrigin: true,
-});
+import { isAVProMobile, isStageFright } from "./user-agent";
+import { getHelp } from "./help";
 
 export function createServer() {
   const cache: Record<string, Promise<string>> = {};
 
   const server = http.createServer((req, res) => {
     try {
-      let url: URL;
-      try {
-        url = new URL(req.url?.slice(1)!);
-      } catch (err) {
-        res.statusCode = 404;
-        res.end();
-        return;
-      }
+      const url = new URL(req.url?.slice(1)!);
       if (req.method !== "GET") {
         res.statusCode = 405;
         res.end();
         return;
       }
 
+      const ua = req.headers["user-agent"] || "";
+      const needResolve = isAVProMobile(ua) || isStageFright(ua);
       const target = url.toString();
-      let promise = cache[target];
 
+      if (!needResolve) {
+        res.statusCode = 302;
+        res.writeHead(302, {
+          Location: target,
+        });
+        res.end();
+        return;
+      }
+
+      let promise = cache[target];
       if (!promise) {
         promise = ytdpl(target);
         cache[target] = promise;
@@ -40,8 +40,11 @@ export function createServer() {
       }
 
       promise.then(
-        (target) => {
-          proxy.web(req, res, { target });
+        (location) => {
+          res.writeHead(302, {
+            Location: location,
+          });
+          res.end();
         },
         (err) => {
           console.error(err);
@@ -50,9 +53,9 @@ export function createServer() {
         }
       );
     } catch (err) {
-      console.log(err);
-      res.statusCode = 500;
-      res.end();
+      console.warn(err);
+      res.statusCode = 200;
+      res.end(getHelp());
     }
   });
 

@@ -1,19 +1,19 @@
-import { ProxyHandler } from "aws-lambda";
+import { Handler } from "aws-lambda";
 import { ytdpl } from "./ytdlp";
 import { isAVProMobile, isStageFright } from "./user-agent";
 import { getHelp } from "./help";
 
 const cache: Record<string, Promise<string>> = {};
 
-export const handler: ProxyHandler = async (event, context) => {
+export const handler: Handler = (event, context) => {
   if (event.httpMethod !== "GET") {
-    return {
+    return Promise.resolve({
       statusCode: 405,
       body: "",
-    };
+    });
   }
   try {
-    const ua = event.headers?.["user-agent"] || "";
+    const ua = event.headers?.["User-Agent"] || "";
     const needResolve = isAVProMobile(ua) || isStageFright(ua);
     const url = new URL(event.path.slice(1));
     for (const key of Object.keys(event.queryStringParameters ?? {})) {
@@ -22,58 +22,58 @@ export const handler: ProxyHandler = async (event, context) => {
     const target = url.toString();
 
     if (!needResolve) {
-      return {
+      return Promise.resolve({
         statusCode: 302,
         headers: {
           Location: target,
         },
         body: "",
-      };
+      });
     }
 
-    let resolve = cache[target];
-    if (resolve) {
-      const location = await resolve;
-      return {
-        statusCode: 302,
-        headers: {
-          Location: location,
-        },
-        body: "",
-      };
+    let promise = cache[target];
+    if (!promise) {
+      cache[target] = promise = ytdpl(target);
+      promise.finally(() => {
+        setTimeout(() => {
+          delete cache[target];
+        }, 1000 * 60 * 20);
+      });
     }
 
-    cache[target] = resolve = ytdpl(target);
-    resolve.finally(() => {
-      setTimeout(() => {
-        delete cache[target];
-      }, 1000 * 60 * 20);
-    });
-
-    const location = await resolve;
-    return {
-      statusCode: 302,
-      headers: {
-        Location: location,
+    return promise.then(
+      (location) => {
+        return {
+          statusCode: 302,
+          headers: {
+            Location: location,
+          },
+          body: "",
+        };
       },
-      body: "",
-    };
+      (err) => {
+        return {
+          statusCode: 500,
+          header: "Error",
+        };
+      }
+    );
   } catch (err) {
     console.warn(err);
     if (event.path !== "/") {
-      return {
+      return Promise.resolve({
         statusCode: 302,
         headers: {
           Location: "/",
         },
-      };
+      });
     }
-    return {
+    return Promise.resolve({
       statusCode: 200,
       body: getHelp(),
       headers: {
-        'Content-Type': 'text/html'
-      }
-    };
+        "Content-Type": "text/html",
+      },
+    });
   }
 };
