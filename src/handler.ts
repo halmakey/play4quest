@@ -15,6 +15,12 @@ export const handler: Handler = (event, context) => {
   try {
     const ua = event.headers?.["User-Agent"] || "";
     const needResolve = isAVProMobile(ua) || isStageFright(ua);
+    if (event.path === "/favicon.ico") {
+      return Promise.resolve({
+        statusCode: 404,
+        body: "",
+      });
+    }
     const url = new URL(event.path.slice(1));
     for (const key of Object.keys(event.queryStringParameters ?? {})) {
       url.searchParams.append(key, event.queryStringParameters?.[key] ?? "");

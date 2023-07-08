@@ -8,6 +8,12 @@ export function createServer() {
 
   const server = http.createServer((req, res) => {
     try {
+      if (req.url === "/favicon.ico") {
+        res.statusCode = 404;
+        res.end();
+        return;
+      }
+  
       const url = new URL(req.url?.slice(1)!);
       if (req.method !== "GET") {
         res.statusCode = 405;
