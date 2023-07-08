@@ -7,7 +7,7 @@ const proxy = httpProxy.createProxyServer({
   changeOrigin: true,
 });
 
-export function createPsudoJinnaiServer() {
+export function createServer() {
   const cache: Record<string, Promise<string>> = {};
 
   const server = http.createServer((req, res) => {

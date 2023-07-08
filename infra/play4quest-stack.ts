@@ -9,13 +9,13 @@ import {
 import { Construct } from "constructs";
 import path from "path";
 
-export class PsudoJinnaiStack extends Stack {
+export class Play4QuestStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const func = new aws_lambda_nodejs.NodejsFunction(
       this,
-      "JinnaizeFunction",
+      "MainFunction",
       {
         entry: path.join(__dirname, "../src/handler.ts"),
         runtime: aws_lambda.Runtime.NODEJS_18_X,
@@ -41,7 +41,7 @@ export class PsudoJinnaiStack extends Stack {
       }
     );
 
-    const api = new aws_apigateway.RestApi(this, "JinnaizeGateway", {});
+    const api = new aws_apigateway.RestApi(this, "Gateway", {});
 
     api.root.addMethod("ANY", new aws_apigateway.LambdaIntegration(func));
     api.root.addProxy({

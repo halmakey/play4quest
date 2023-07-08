@@ -1,10 +1,11 @@
 {
-  "name": "psudo-jinnai",
+  "name": "play4quest",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
-    "start": "sam local start-api -t ./cdk.out/PsudoJinnaiStack.template.json",
+    "start": "sam local start-api -t ./cdk.out/Play4QuestStack.template.json",
     "start-server": "tsx main",
     "postinstall": "tsx ./scripts/dl-ytdlp",
     "test": "echo \"Error: no test specified\" && exit 1"

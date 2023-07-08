@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { PsudoJinnaiStack } from '../infra/psudo-jinnai-stack';
+import { Play4QuestStack } from '../infra/play4quest-stack';
 
 const app = new cdk.App();
-new PsudoJinnaiStack(app, 'PsudoJinnaiStack', {
+new Play4QuestStack(app, 'Play4QuestStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
