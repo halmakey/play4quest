@@ -20,7 +20,7 @@ export function getHelp() {
     </ol>
     <textarea label="bookmarklet" id="p" style="white-space:pre-wrap;word-break:break-all;width:500px;height:125px;background-color:darkslategray;color:white;padding:8px;" readonly></textarea>
     <script>
-      document.getElementById("p").value = "javascript:function c(){var a=document.createElement('textarea');a.textContent='" + window.location.href + "'+window.location.href;document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a)}c();";
+      document.getElementById("p").value = "javascript:(function(){var a=document.createElement('textarea');a.textContent='" + window.location.href + "'+window.location.href;document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a)})();";
     </script>
     <h2>Usage</h2>
     <ol>
