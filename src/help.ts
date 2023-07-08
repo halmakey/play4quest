@@ -11,7 +11,7 @@ export function getHelp() {
   
   <body>
     <h1>Play4Quest</h1>
-    Play4Quest converts YouTube video URLs so they can be played on Quest as well.
+    Play4Quest converts YouTube video URLs so they can be played on Quest as well.  (It performs the conversion known as Jinnaize.)
     <h2>Setup</h2>
     <ol>
       <li>Add this page to your bookmark bar.</li>
@@ -20,7 +20,7 @@ export function getHelp() {
     </ol>
     <textarea label="bookmarklet" id="p" style="white-space:pre-wrap;word-break:break-all;width:500px;height:125px;background-color:darkslategray;color:white;padding:8px;" readonly></textarea>
     <script>
-      document.getElementById("p").value = "javascript:function copyUrl(){var a=document.createElement('textarea');a.textContent='" + window.location.origin + "/'+window.location.href;document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a)}copyUrl();";
+      document.getElementById("p").value = "javascript:function copyUrl(){var a=document.createElement('textarea');a.textContent='" + window.location.href + "'+window.location.href;document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a)}copyUrl();";
     </script>
     <h2>Usage</h2>
     <ol>
