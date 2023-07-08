@@ -6,6 +6,7 @@
 
 - Node.js 18
 - macOS or Linux
+- AWS CDK
 
 ## 準備
 
@@ -16,9 +17,14 @@ npm i
 ## 起動
 
 ```sh
-npm start
+cdk synth && npm start
+```
+
+## デプロイ
+```sh
+cdk deploy
 ```
 
 ## 使用
 
-`http://127.0.0.1:3000/<VideoURL>`
+`https://play4.quest/<VideoURL>`
