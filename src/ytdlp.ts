@@ -5,8 +5,9 @@ export const PLATFORM_BIN_MAP: Record<string, Record<string, string>> = {
   darwin: { x64: "yt-dlp_macos", arm64: "yt-dlp_macos" },
   linux: { x64: "yt-dlp_linux", arm64: "yt-dlp_linux_aarch64" },
 };
-export const BIN_NAME = PLATFORM_BIN_MAP[process.platform][process.arch];
-export const BIN_PATH = path.join(__dirname, "../bin", BIN_NAME);
+
+const BIN_NAME = PLATFORM_BIN_MAP[process.platform][process.arch];
+const BIN_PATH = path.join(process.cwd(), "bin", BIN_NAME);
 
 export function ytdpl(target: string): Promise<string> {
   return new Promise((res, rej) => {
