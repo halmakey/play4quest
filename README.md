@@ -1,30 +1,34 @@
-# 偽陣内
+# Play4Quest
 
-陣内システム的な何かです。
+Play4Quest converts YouTube video URLs so they can be played on Quest as well.   
+(It performs the conversion known as Jinnaize.)
 
-## 環境
+## Environment
 
 - Node.js 18
 - macOS or Linux
 - AWS CDK
 
-## 準備
+## Setup
 
 ```sh
 npm i
 ```
 
-## 起動
+## Run (Local test)
 
 ```sh
 cdk synth && npm start
 ```
 
-## デプロイ
+Open http://127.0.0.1:3000
+
+## Deploy
+
 ```sh
 cdk deploy
 ```
 
-## 使用
+## Usage
 
-`https://play4.quest/<VideoURL>`
+Open https://play4.quest/
