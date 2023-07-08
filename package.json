@@ -4,22 +4,31 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsx main",
+    "start": "sam local start-api -t ./cdk.out/PsudoJinnaiStack.template.json",
+    "start-server": "tsx main",
     "postinstall": "tsx ./scripts/dl-ytdlp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.119",
     "@types/http-proxy": "^1.17.11",
     "@types/node": "^20.3.3",
+    "@types/qs": "^6.9.7",
     "@types/send": "^0.17.1",
+    "aws-cdk": "^2.86.0",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "aws-cdk-lib": "^2.86.0",
+    "aws-lambda": "^1.0.7",
     "axios": "^1.4.0",
+    "constructs": "^10.2.68",
     "http-proxy": "^1.18.1",
-    "send": "^0.18.0"
+    "qs": "^6.11.2",
+    "send": "^0.18.0",
+    "source-map-support": "^0.5.21"
   }
 }
