@@ -25,6 +25,16 @@ export function createServer() {
       const needResolve = isAVProMobile(ua) || isStageFright(ua);
       const target = url.toString();
 
+      let promise = cache[target];
+      if (!promise) {
+        promise = cache[target] = ytdpl(target);
+        promise.finally(() => {
+          setTimeout(() => {
+            delete cache[target];
+          }, 1000 * 60 * 30);
+        });
+      }
+
       if (!needResolve) {
         res.statusCode = 302;
         res.writeHead(302, {
@@ -32,17 +42,6 @@ export function createServer() {
         });
         res.end();
         return;
-      }
-
-      let promise = cache[target];
-      if (!promise) {
-        promise = ytdpl(target);
-        cache[target] = promise;
-        promise.finally(() => {
-          setTimeout(() => {
-            delete cache[target];
-          }, 1000 * 60 * 30);
-        });
       }
 
       promise.then(

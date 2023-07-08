@@ -27,6 +27,16 @@ export const handler: Handler = (event, context) => {
     }
     const target = url.toString();
 
+    let promise = cache[target];
+    if (!promise) {
+      promise = cache[target] = ytdpl(target);
+      promise.finally(() => {
+        setTimeout(() => {
+          delete cache[target];
+        }, 1000 * 60 * 30);
+      });
+    }
+
     if (!needResolve) {
       return Promise.resolve({
         statusCode: 302,
@@ -34,16 +44,6 @@ export const handler: Handler = (event, context) => {
           Location: target,
         },
         body: "",
-      });
-    }
-
-    let promise = cache[target];
-    if (!promise) {
-      cache[target] = promise = ytdpl(target);
-      promise.finally(() => {
-        setTimeout(() => {
-          delete cache[target];
-        }, 1000 * 60 * 20);
       });
     }
 
