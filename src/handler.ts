@@ -1,6 +1,7 @@
 import { ProxyHandler } from "aws-lambda";
 import { ytdpl } from "./ytdlp";
 import { isAVProMobile, isStageFright } from "./user-agent";
+import { getHelp } from "./help";
 
 const cache: Record<string, Promise<string>> = {};
 
@@ -59,9 +60,20 @@ export const handler: ProxyHandler = async (event, context) => {
     };
   } catch (err) {
     console.warn(err);
+    if (event.path !== "/") {
+      return {
+        statusCode: 302,
+        headers: {
+          Location: "/",
+        },
+      };
+    }
     return {
-      statusCode: 404,
-      body: String(err),
+      statusCode: 200,
+      body: getHelp(),
+      headers: {
+        'Content-Type': 'text/html'
+      }
     };
   }
 };
