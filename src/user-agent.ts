@@ -1,7 +1,7 @@
 export function isStageFright(userAgent: string) {
-  return userAgent.includes("stagefright");
+  return userAgent.toLocaleLowerCase().includes("stagefright");
 }
 
 export function isAVProMobile(userAgent: string) {
-  return userAgent.includes("AVProMobileVideo");
+  return userAgent.toLocaleLowerCase().includes("avpromobilevideo");
 }
