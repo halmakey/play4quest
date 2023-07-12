@@ -6,9 +6,10 @@ import { getHelp } from "./help";
 const cache: Record<string, Promise<string>> = {};
 
 export const handler: Handler = (event, context) => {
-  if (event.httpMethod !== "GET") {
+  if (event.httpMethod !== "GET" && event.httpMethod !== "HEAD") {
     return Promise.resolve({
       statusCode: 405,
+      headers: { "Content-Type": "text/plain" },
       body: "",
     });
   }
@@ -18,6 +19,7 @@ export const handler: Handler = (event, context) => {
     if (event.path === "/favicon.ico") {
       return Promise.resolve({
         statusCode: 404,
+        headers: { "Content-Type": "text/plain" },
         body: "",
       });
     }
@@ -42,6 +44,7 @@ export const handler: Handler = (event, context) => {
         statusCode: 302,
         headers: {
           Location: target,
+          "Content-Type": "text/plain",
         },
         body: "",
       });
@@ -53,14 +56,17 @@ export const handler: Handler = (event, context) => {
           statusCode: 302,
           headers: {
             Location: location,
+            "Content-Type": "text/plain",
           },
           body: "",
         };
       },
       (err) => {
+        console.error(err);
         return {
           statusCode: 500,
-          header: "Error",
+          headers: { "Content-Type": "text/plain" },
+          body: "Error",
         };
       }
     );
@@ -71,15 +77,17 @@ export const handler: Handler = (event, context) => {
         statusCode: 302,
         headers: {
           Location: "/",
+          headers: { "Content-Type": "text/plain" },
         },
+        body: "",
       });
     }
     return Promise.resolve({
       statusCode: 200,
-      body: getHelp(),
       headers: {
         "Content-Type": "text/html",
       },
+      body: getHelp(),
     });
   }
 };
