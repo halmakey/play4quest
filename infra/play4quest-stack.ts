@@ -30,7 +30,7 @@ export class Play4QuestStack extends Stack {
             },
             afterBundling(inputDir, outputDir) {
               return [
-                `npx tsx ${inputDir}/scripts/dl-ytdlp.ts linux x64 ${outputDir}/bin`,
+                `HOME=/root npx tsx ${inputDir}/scripts/dl-ytdlp.ts linux x64 ${outputDir}/bin`,
               ];
             },
           },
